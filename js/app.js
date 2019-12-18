@@ -1,86 +1,90 @@
-console.log("js loaded!");
+var seconds = 0;
+var mins; 
+var minutes = 0;
+var interval;
+var secondsDisplay = 0;
+var pausepressed = false; 
+var shortPressed = false;
+var longPressed = false; 
 
-// set timer in minutes 
-var mins = 1;
+function pomodoro(mins) {
+    seconds = mins * 60 || 0;
 
-// convert minutes to seconds
-var secs = mins * 60;
+    interval = setInterval(function() {
+        seconds++;
+        secondsDisplay++;
+        document.getElementById("timer").innerHTML = secondsDisplay;
+        document.getElementById('minutes').innerHTML = minutes;
 
+        // count seconds display up and reset at 60 seconds 
+        if (secondsDisplay == 60){
+            secondsDisplay = 0;
 
-// if short break button is pressed.
-document.getElementById('shortbreak').onclick = function(){
-    mins = 5;
-    secs = mins * 60;
-    // Initiate the timer
-    setTimeout('Decrement()', 60); // runs the Decrement function every 60 milli seconds
-}
-// if long break button is clicked
-document.getElementById('longbreak').onclick = function(){
-    mins = 10;
-    secs = mins * 60;
-}
+        }
+        // if seconds is equal to 25minutes (in seconds)
+        if(seconds == 1500){
+            // play alarm sound 
+            var audio = new Audio('alarm.wav');
+            audio.play();
+            // stop timer 
+            seconds = mins * 60 || 0;
+            document.getElementById("timer").innerHTML = seconds;
+            clearInterval(interval); 
 
-// count function triggered when button is clicked
-function countDown() {
-    setTimeout('Decrement()', 60); // runs the Decrement function every 60 milli seconds
-}
+        }
+        // trigger for short timer
+        if (seconds == 300 && shortPressed == true) {
+            shortPressed = false;
+            // play alarm sound 
+            var audio = new Audio('alarm.wav');
+            audio.play();
+            // stop timer 
+            seconds = mins * 60 || 0;
+            document.getElementById("timer").innerHTML = seconds;
+            clearInterval(interval); 
+        }   
+        // trigger for long timer
+        if (seconds == 600 && longPressed == true) {
+            longPressed = false;
+            // play alarm sound 
+            var audio = new Audio('alarm.wav');
+            audio.play();
+            // stop timer 
+            seconds = mins * 60 || 0;
+            document.getElementById("timer").innerHTML = seconds;
+            clearInterval(interval); 
+        }
 
-function Decrement() {
-    if (document.getElementById) {
-        minutes = document.getElementById("minutes");
-        seconds = document.getElementById("seconds");
-    }
-
-    // if pause button is clicked
-    document.getElementById('pause').onclick = function(){
-        // stop the function looping
-        clearTimeout(timerId);
-    }
-
-    // if reset button is clicked
-    document.getElementById('reset').onclick = function(){
-        // reset the variables 
-        mins = 2;
-        secs = mins * 60;
-        // stop the function looping
-    }
-
-    // if less than a minute remaining 
-    // Display only seconds value
-    if (seconds < 59){
-        seconds.value = secs;
-    }
-    // display both minutes and seconds 
-    // get minutes and get seconds is used to 
-    // get minutes and seconds 
-    else {
-        minutes.value = getminutes();
-        seconds.value = getseconds();
-    }
-    // if seconds becomes zero, 
-    // then page alert 
-    if (mins < 0) {
-        var alarm = document.getElementById('myAudio');
-        alarm.play();
-        minutes.value = 0;
-        seconds.value = 0;
-
-    }
-    // if seconds > 0 then seconds is decremented 
-    else {
-        secs--;
-        var timerId = setTimeout('Decrement()', 1000); // calls the Decrement function every 1000 ms
-    }
+        // if seconds equals 60 display a minute counter 
+        if (seconds == 60) {
+            minutes++;
+            document.getElementById('minutes').innerHTML = minutes;
+        }
+    }, 1000)
 }
 
-function getminutes() {
-    // minutes is seconds divded by 60, rounded down
-    mins = Math.floor(secs / 60);
-    return mins;
+// if start button is clicked start the timer function
+document.getElementById('start').onclick = function() {
+    pomodoro();
 }
 
-function getseconds(){
-    // take minutes remaining (as seconds) away 
-    // from total seconds remaining
-    return secs - Math.round(mins * 60);
+// if pause button has been pressed 
+document.getElementById('pause').onclick = function() {
+    pausepressed == true;
+    clearInterval(interval);  
+    console.log("pause button pressed");
+}
+
+// if reset button is pressed
+document.getElementById('reset').onclick = function() {
+    seconds = mins * 60 || 0;
+    document.getElementById("timer").innerHTML = seconds;
+    clearInterval(interval); 
+    console.log("reset button pressed");
+}
+
+// if short break button is pressed 
+document.getElementById('shortbreak').onclick = function() {
+    shortPressed = true;
+    pomodoro();
 }

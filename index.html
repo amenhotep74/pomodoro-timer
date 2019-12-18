@@ -6,22 +6,33 @@
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
         <audio id="myAudio">
             <source src="alarm.wav" type="audio/wav">
                 Your browser does not support the audio element.
         </audio>
-        Minutes
-        <input id="minutes"></div><br/>
-        Seconds
-        <input id="seconds"></div>
-        <br/>
-        <button id="start" onclick="countDown()">Start Pomodoro!</button>
-        <button id="pause">Pause</button>
-        <button id="reset">Reset</button>
-        <button id="shortbreak">Short Break</button>
-        <button id="longbreak">Long Break</button>
+    <div class="container">
+        <div class="center">
+            <div class="item">
+                <button id="shortbreak">Short Break</button>
+                <button id="longbreak">Long Break</button>
+            </div>
+            <br>
+            <form class="form-inline">
+                Minutes:
+                <div id="minutes">0</div>
+                Seconds:
+                <div id="timer">0</div>
+                
+            </form>
+            <br/>
+            <button id="start">Start Pomodoro!</button>
+            <button id="pause">Pause</button>
+            <button id="reset">Reset</button>
+    </div>
+</div>
         <script src="./js/app.js"></script>
     </body>
 </html>
